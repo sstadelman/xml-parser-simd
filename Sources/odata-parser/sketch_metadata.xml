@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="Client" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="JobSteps" EntityType="Client.JobSteps">
+          <NavigationPropertyBinding Path="job" Target="Jobs"/>
+        </EntitySet>
+        <EntitySet Name="Jobs" EntityType="Client.Jobs">
+          <NavigationPropertyBinding Path="technician" Target="Technicians"/>
+          <NavigationPropertyBinding Path="steps" Target="JobSteps"/>
+        </EntitySet>
+        <EntitySet Name="Technicians" EntityType="Client.Technicians">
+          <NavigationPropertyBinding Path="jobs" Target="Jobs"/>
+        </EntitySet>
+      </EntityContainer>
+      <EntityType Name="JobSteps">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="title" Type="Edm.String"/>
+        <Property Name="isRead" Type="Edm.Boolean"/>
+        <NavigationProperty Name="job" Type="Client.Jobs" Partner="steps">
+          <ReferentialConstraint Property="job_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="job_ID" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="Jobs">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="title" Type="Edm.String"/>
+        <Property Name="number" Type="Edm.String" MaxLength="15"/>
+        <Property Name="tags" Type="Edm.String"/>
+        <Property Name="description" Type="Edm.String"/>
+        <Property Name="status" Type="Edm.String" MaxLength="15"/>
+        <Property Name="priority" Type="Edm.String" MaxLength="7"/>
+        <NavigationProperty Name="technician" Type="Client.Technicians" Partner="jobs">
+          <ReferentialConstraint Property="technician_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="steps" Type="Collection(Client.JobSteps)" Partner="job"/>
+        <Property Name="technician_ID" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="Technicians">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="firstName" Type="Edm.String" MaxLength="63"/>
+        <Property Name="lastName" Type="Edm.String" MaxLength="63"/>
+        <Property Name="imgURL" Type="Edm.String" MaxLength="255"/>
+        <Property Name="phone" Type="Edm.Int32"/>
+        <Property Name="email" Type="Edm.String" MaxLength="255"/>
+        <Property Name="video" Type="Edm.String" MaxLength="255"/>
+        <NavigationProperty Name="jobs" Type="Collection(Client.Jobs)" Partner="technician"/>
+      </EntityType>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
